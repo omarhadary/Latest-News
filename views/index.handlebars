@@ -13,7 +13,7 @@
                         <li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a href="#">Saved Articles<span class="sr-only">(current)</span></a></li>
                     </ul>
-                    <button type="button" class="btn btn-default navbar-btn">Scrape New Articles</button>
+                    <a href="/scrape"><button type="button" class="btn btn-default navbar-btn">Scrape New Articles</button></a>
                 </div>
             </div>
         </nav>
@@ -27,7 +27,15 @@
         </div>
 	</div>
 	<div class="row bottom-row">
-        
+        {{#each articles}} 
+		    <div class="articles">
+               <div class="title"> {{this.title}}</div> 			        
+				        <form action="/update/{{this.title}}?_method=PUT" method="post">
+					        <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Save Article!</button>
+				        </form>
+			        <div class="link">{{this.link}}</div>
+			</div>
+        {{/each}}
 	</div>
 </body>
 </html>

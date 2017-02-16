@@ -53,7 +53,23 @@ app.set("view engine", "handlebars");
 
 // Simple index route
 app.get("/", function(req, res) {
-  res.render("index");
+//   res.render("index");
+
+  Article.find({}, function(error, doc) {
+    var hbsObject = {
+        articles: doc
+    };
+    console.log(hbsObject);
+    res.render("index", hbsObject);
+    // Log any errors
+    // if (error) {
+    //   console.log(error);
+    // }
+    // Or send the doc to the browser as a json object
+    // else {
+    //   res.json(doc);
+    // }
+  });
 });
 
 // A GET request to scrape the npr website
@@ -91,21 +107,26 @@ app.get("/scrape", function(req, res) {
     });
   });
   // Tell the browser that we finished scraping the text
-  res.send("Scrape Complete");
+  res.redirect("/");
 });
 
 // This will get the articles we scraped from the mongoDB
 app.get("/articles", function(req, res) {
   // Grab every doc in the Articles array
   Article.find({}, function(error, doc) {
+    var hbsObject = {
+        articles: doc
+    };
+    console.log(hbsObject);
+    res.render("index", hbsObject);
     // Log any errors
-    if (error) {
-      console.log(error);
-    }
+    // if (error) {
+    //   console.log(error);
+    // }
     // Or send the doc to the browser as a json object
-    else {
-      res.json(doc);
-    }
+    // else {
+    //   res.json(doc);
+    // }
   });
 });
 
