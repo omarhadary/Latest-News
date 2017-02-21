@@ -4,43 +4,84 @@
 	<title></title>
 </head>
 <body>
-	<div class="row top-row">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <p class="navbar-text">Latest News</p>
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
-                        <li class="active"><a href="saved">Saved Articles<span class="sr-only">(current)</span></a></li>
-                    </ul>
-                    <a href="/scrape"><button type="button" class="btn btn-default navbar-btn">Scrape New Articles</button></a>
+    <div class="container">
+        <div class="row top-row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <p class="navbar-text">Latest News</p>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
+                            <li class="active"><a href="saved">Saved Articles<span class="sr-only">(current)</span></a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-	</div>
-	<div class="row middle-row">
-        <div class="jumbotron">
-            <div class="container">
-                <h1>Latest News</h1>
-                <h3>NPR Edition</h3>
+            </nav>
+        </div>
+        <div class="row middle-row">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>Latest News</h1>
+                    <h3>NPR Edition</h3>
+                </div>
             </div>
         </div>
-	</div>
-	<div class="row bottom-row">
-        {{#each articles}}
-            {{#if this.saved}} 
-                <div class="articles">
-                <div class="title"> {{this.title}}</div> 	
-                    <form action="/update/{{this.title}}?_method=PUT" method="post">
-                        <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Add a Note</button>
-                    </form>                    		        
-                    <form action="/remove/{{this.id}}?_method=PUT" method="post">
-                        <input name="saved" type="hidden" value="false"> <button class="saved-button" type="submit">Remove from Saved</button>
-                    </form>
-                    <div class="link">{{this.link}}</div>
-                </div>
-            {{/if}}
-        {{/each}}
-	</div>
+        <div class="row bottom-row">
+            {{#each articles}}
+                {{#if this.saved}} 
+                    <div class="articles">
+                        <div class="title"> {{this.title}}</div> 
+                            <form action="/remove/{{this.id}}?_method=PUT" method="post">
+                                <input name="saved" type="hidden" value="false"> <button class="btn btn-default remove-button" type="submit">Remove from Saved</button>
+                            </form>
+                        <div class="link">{{this.link}}</div>
+                        <div class="input-group">
+                            <form action="/addNote/{{this.id}}?_method=PUT" method="post">
+                                <input name="addNote" type="text" class="form-control" placeholder="Add Note...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default add-note-button" type="submit">Add a Note</button>
+                                </span>
+                            </form>
+                        </div>             		        
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+
+        <!-- Modal -->
+        {{!--<div class="modal fade" id="notesModal" role="dialog">
+            <div class="modal-dialog">--}}
+            
+            <!-- Modal content-->
+            {{!--<div class="modal-content">
+                {{#each articles}}
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Article Notes</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="comment">New Note</label>
+                                <textarea class="form-control" rows="5" id="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/addNote/{{this.id}}?_method=PUT" method="post">
+                            <input name="addNote" type="hidden" value="true"> <button type="button" class="btn btn-default" data-dismiss="modal" type="submit">Save Note</button>
+                        </form>
+                    </div>
+                {{/each}}
+            </div>--}}
+            
+            {{!--</div>
+        </div>--}}
+    </div>
+    {{!--<script>--}}
+        {{!--$(document).ready(function(){--}}
+            {{!--$(".note-button").click(function(){--}}
+                {{!--$("#notesModal").modal();--}}
+            {{!--});--}}
+        {{!--});        --}}
+    </script>
 </body>
 </html>

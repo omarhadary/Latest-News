@@ -104,7 +104,7 @@ app.get("/scrape", function(req, res) {
         }
       });
 
-    });
+    });          
     // Tell the browser that we finished scraping the text
     res.redirect("/");
   });
@@ -134,6 +134,27 @@ app.post("/remove/:id?", function(req, res) {
         }
         else {
             res.redirect("/saved");
+        }
+    });
+});
+
+// A POST request to save a note
+app.post("/addNote/:id?", function(req, res) {
+    var newNote = new Note(req.body);
+    newNote.save(function(error, doc) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+            .exec(function(err, doc) {
+                if(err) {
+                    console.log(err);
+                }
+                else {
+                    res.redirect("/saved");
+                }
+            });
         }
     });
 });

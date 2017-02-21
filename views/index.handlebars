@@ -4,38 +4,69 @@
 	<title></title>
 </head>
 <body>
-	<div class="row top-row">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <p class="navbar-text">Latest News</p>
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
-                        <li class="active"><a href="/saved">Saved Articles<span class="sr-only">(current)</span></a></li>
-                    </ul>
-                    <a href="/scrape"><button type="button" class="btn btn-default navbar-btn">Scrape New Articles</button></a>
+    <div class="container">
+        <div class="row top-row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <p class="navbar-text">Latest News</p>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
+                            <li class="active"><a href="/saved">Saved Articles<span class="sr-only">(current)</span></a></li>
+                        </ul>
+                        <a href="/scrape"><button type="button" class="btn btn-default navbar-btn" id="scrapedArticlesButton">Scrape New Articles</button></a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="row middle-row">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>Latest News</h1>
+                    <h3>NPR Edition</h3>
                 </div>
             </div>
-        </nav>
-	</div>
-	<div class="row middle-row">
-        <div class="jumbotron">
-            <div class="container">
-                <h1>Latest News</h1>
-                <h3>NPR Edition</h3>
+        </div>
+        <div class="row bottom-row">
+            {{#each articles}} 
+                <div class="articles">
+                <div class="title"> {{this.title}}</div> 			        
+                    <form action="/save/{{this.id}}?_method=PUT" method="post">
+                        <input name="saved" type="hidden" value="true"> <button class="btn btn-default saved-button" type="submit">Save Article!</button>
+                    </form>
+                    <div class="link">{{this.link}}</div>
+                </div>
+            {{/each}}
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="scrapedArticlesModal" role="dialog">
+            <div class="modal-dialog">
+            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">You Scrapped Articles</h4>
+                </div>
+                <div class="modal-body">
+                <p>25 Articles Scrapped</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Okay</button>
+                </div>
+            </div>
+            
             </div>
         </div>
-	</div>
-	<div class="row bottom-row">
-        {{#each articles}} 
-		    <div class="articles">
-               <div class="title"> {{this.title}}</div> 			        
-				<form action="/save/{{this.id}}?_method=PUT" method="post">
-				    <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Save Article!</button>
-				</form>
-			    <div class="link">{{this.link}}</div>
-			</div>
-        {{/each}}
-	</div>
+
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("#scrapedArticlesButton").click(function(){
+                $("#scrapedArticlesModal").modal();
+            });
+        });        
+    </script>
 </body>
 </html>
