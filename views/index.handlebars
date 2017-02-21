@@ -30,10 +30,10 @@
         {{#each articles}} 
 		    <div class="articles">
                <div class="title"> {{this.title}}</div> 			        
-				        <form action="/update/{{this.title}}?_method=PUT" method="post">
-					        <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Save Article!</button>
-				        </form>
-			        <div class="link">{{this.link}}</div>
+				<form action="/update/{{this.title}}?_method=PUT" method="post">
+				    <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Save Article!</button>
+				</form>
+			    <div class="link">{{this.link}}</div>
 			</div>
         {{/each}}
 	</div>
