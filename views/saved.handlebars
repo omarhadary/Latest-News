@@ -30,9 +30,12 @@
         {{#each articles}}
             {{#if this.saved}} 
                 <div class="articles">
-                <div class="title"> {{this.title}}</div> 			        
+                <div class="title"> {{this.title}}</div> 	
                     <form action="/update/{{this.title}}?_method=PUT" method="post">
-                        <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Save Article!</button>
+                        <input name="saved" type="hidden" value="true"> <button class="saved-button" type="submit">Add a Note</button>
+                    </form>                    		        
+                    <form action="/remove/{{this.id}}?_method=PUT" method="post">
+                        <input name="saved" type="hidden" value="false"> <button class="saved-button" type="submit">Remove from Saved</button>
                     </form>
                     <div class="link">{{this.link}}</div>
                 </div>

@@ -110,8 +110,8 @@ app.get("/scrape", function(req, res) {
   });
 });
 
-// A POST request to save the articles
-app.post("/save/:id", function(req, res) {
+// A POST request to save an article
+app.post("/save/:id?", function(req, res) {
     console.log("this is the id"+req.params.id);
     Article.findOneAndUpdate({"_id": req.params.id }, { "saved": true })
     .exec(function(err, doc) {
@@ -120,6 +120,20 @@ app.post("/save/:id", function(req, res) {
         }
         else {
             res.redirect("/");
+        }
+    });
+});
+
+// A POST request to un-save an article
+app.post("/remove/:id?", function(req, res) {
+    console.log("this is the id"+req.params.id);
+    Article.findOneAndUpdate({"_id": req.params.id }, { "saved": false })
+    .exec(function(err, doc) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.redirect("/saved");
         }
     });
 });
