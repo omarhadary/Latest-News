@@ -51,7 +51,7 @@ app.set("view engine", "handlebars");
 // Routes
 // ======
 
-// Simple index route
+// Simple index routes
 app.get("/", function(req, res) {
   Article.find({}, function(error, doc) {
     var hbsObject = {
@@ -59,6 +59,16 @@ app.get("/", function(req, res) {
     };
     console.log(hbsObject);
     res.render("index", hbsObject);
+  });
+});
+
+app.get("/saved", function(req, res) {
+  Article.find({}, function(error, doc) {
+    var hbsObject = {
+        articles: doc
+    };
+    console.log(hbsObject);
+    res.render("saved", hbsObject);
   });
 });
 
@@ -98,6 +108,20 @@ app.get("/scrape", function(req, res) {
     // Tell the browser that we finished scraping the text
     res.redirect("/");
   });
+});
+
+// A POST request to save the articles
+app.post("/save/:id", function(req, res) {
+    console.log("this is the id"+req.params.id);
+    Article.findOneAndUpdate({"_id": req.params.id }, { "saved": true })
+    .exec(function(err, doc) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.redirect("/");
+        }
+    });
 });
 
 // Listen on PORT
