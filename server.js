@@ -63,7 +63,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/saved", function(req, res) {
-    Article.find({}).populate("Note")
+    Article.find({}).populate("note")
     .exec(function(error,doc) {
         if (error) {
             console.log(error);

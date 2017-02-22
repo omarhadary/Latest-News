@@ -36,23 +36,24 @@
                             </form>
                         <div class="link">{{this.link}}</div>
                         <div class="note">
-                            {{this.note}}
-                            <form action="/deleteNote/{{this.id}}?_method=DELETE" method="POST">
-                                <button class="btn btn-default delete-button" type="submit">Delete Note</button>
-                            </form>
+                            {{this.note.id}}
+                            {{this.note.body}}
                         </div>
-                        <div class="note">
+                        <form action="/deleteNote/{{this.note.id}}?_method=DELETE" method="POST">
+                            <button class="btn btn-default delete-button" type="submit">Delete Note</button>
+                        </form>
+                        {{!--<div class="note">
                             {{#each note}}
                                 <div>
                                     <div class="article-notes">
-                                        {{this}}
+                                        {{body}}
                                     </div>
                                     <form action="/deleteNote/{{this.id}}?_method=DELETE" method="POST">
                                         <button class="btn btn-default delete-button" type="submit">Delete Note</button>
                                     </form>
                                 </div>
                             {{/each}}
-                        </div>
+                        </div>--}}
                         <div class="input-group">
                             <form action="/addNote/{{this.id}}?_method=PUT" method="post">
                                 <input name="body" type="text" class="form-control" placeholder="Add Note...">
