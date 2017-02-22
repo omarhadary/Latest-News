@@ -32,14 +32,32 @@
                     <div class="articles">
                         <div class="title"> {{this.title}}</div> 
                             <form action="/remove/{{this.id}}?_method=PUT" method="post">
-                                <input name="saved" type="hidden" value="false"> <button class="btn btn-default remove-button" type="submit">Remove from Saved</button>
+                                <button class="btn btn-default remove-button" type="submit">Remove from Saved</button>
                             </form>
                         <div class="link">{{this.link}}</div>
+                        <div class="note">
+                            {{this.note}}
+                            <form action="/deleteNote/{{this.id}}?_method=DELETE" method="POST">
+                                <button class="btn btn-default delete-button" type="submit">Delete Note</button>
+                            </form>
+                        </div>
+                        <div class="note">
+                            {{#each note}}
+                                <div>
+                                    <div class="article-notes">
+                                        {{this}}
+                                    </div>
+                                    <form action="/deleteNote/{{this.id}}?_method=DELETE" method="POST">
+                                        <button class="btn btn-default delete-button" type="submit">Delete Note</button>
+                                    </form>
+                                </div>
+                            {{/each}}
+                        </div>
                         <div class="input-group">
                             <form action="/addNote/{{this.id}}?_method=PUT" method="post">
-                                <input name="addNote" type="text" class="form-control" placeholder="Add Note...">
+                                <input name="body" type="text" class="form-control" placeholder="Add Note...">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default add-note-button" type="submit">Add a Note</button>
+                                    <input class="btn btn-default add-note-button" type="submit">Add a Note</input>
                                 </span>
                             </form>
                         </div>             		        

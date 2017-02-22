@@ -63,13 +63,25 @@ app.get("/", function(req, res) {
 });
 
 app.get("/saved", function(req, res) {
-  Article.find({}, function(error, doc) {
-    var hbsObject = {
-        articles: doc
-    };
-    console.log(hbsObject);
-    res.render("saved", hbsObject);
-  });
+    Article.find({}).populate("Note")
+    .exec(function(error,doc) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            var hbsObject = {
+            articles: doc
+            }
+            res.render("saved", hbsObject);
+        }
+    });
+//   Article.find({}, function(error, doc) {
+//     var hbsObject = {
+//         articles: doc
+//     };
+//     console.log(hbsObject);
+//     res.render("saved", hbsObject);
+//   });
 });
 
 // A GET request to scrape the npr website
@@ -140,7 +152,13 @@ app.post("/remove/:id?", function(req, res) {
 
 // A POST request to save a note
 app.post("/addNote/:id?", function(req, res) {
+    console.log("#*#*req.body#*#*#");
+    console.log(req.body);
+    console.log("#*#*#*#*#");
     var newNote = new Note(req.body);
+    console.log("#*#*#newNote*#*#");
+    console.log(newNote);
+    console.log("#*#*#*#*#");
     newNote.save(function(error, doc) {
         if (error) {
             console.log(error);
@@ -152,11 +170,34 @@ app.post("/addNote/:id?", function(req, res) {
                     console.log(err);
                 }
                 else {
+                    // res.send(doc);
                     res.redirect("/saved");
                 }
             });
         }
     });
+});
+
+// A DELETE request to delete a Note
+app.delete("/deleteNote/:id", function(req, res) {
+    console.log("this is the id"+req.params.id);
+    Note.remove({"_id": req.params.id}, function(error) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            res.redirect("/saved");
+        }
+    });
+    // Note.remove({"_id": req.params.id })
+    // .exec(function(err, doc) {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    //     else {
+    //         res.redirect("/saved");
+    //     }
+    // });
 });
 
 // Listen on PORT
