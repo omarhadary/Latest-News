@@ -28,8 +28,14 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 
-// Database configuration with mongoose
-mongoose.connect("mongodb://localhost/latestnews");
+if (process.env.MONGODB_URI) {
+    // Database configuration with mongoose if on Heroku
+    mongoose.connect(process.env.MONGODB_URI);
+} else {
+    // Database configuration with mongoose if on Local Machine
+    mongoose.connect("mongodb://localhost/latestnews");
+}
+
 var db = mongoose.connection;
 
 // Show any mongoose errors
