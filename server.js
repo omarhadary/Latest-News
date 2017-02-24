@@ -81,13 +81,6 @@ app.get("/saved", function(req, res) {
             res.render("saved", hbsObject);
         }
     });
-//   Article.find({}, function(error, doc) {
-//     var hbsObject = {
-//         articles: doc
-//     };
-//     console.log(hbsObject);
-//     res.render("saved", hbsObject);
-//   });
 });
 
 // A GET request to scrape the npr website
