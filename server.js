@@ -86,45 +86,39 @@ app.get("/saved", function(req, res) {
 
 // A GET request to scrape the npr website
 app.get("/scrape", function(req, res) {
-  // First, we grab the body of the html with request
+  // Grab the body of the html 
   request("http://www.npr.org/sections/news/", function(error, response, html) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
+    // load into cheerio
     var $ = cheerio.load(html);
-    // Now, we grab every h2 within an article tag, and do the following:
+    // grab every h2
     $("h2.title").each(function(i, element) {
 
-      // Save an empty result object
       var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
+      // Add the text and href of every link
       result.title = $(this).children("a").text();
       result.link = $(this).children("a").attr("href");
 
-      // Using our Article model, create a new entry
-      // This effectively passes the result object to the entry (and the title and link)
+      // create a new entry in Article model
       var entry = new Article(result);
 
-      // Now, save that entry to the db
+      // save to db
       entry.save(function(err, doc) {
-        // Log any errors
         if (err) {
           console.log(err);
         }
-        // Or log the doc
         else {
           console.log(doc);
         }
       });
 
     });          
-    // Tell the browser that we finished scraping the text
     res.redirect("/");
   });
 });
 
 // A POST request to save an article
 app.post("/save/:id?", function(req, res) {
-    console.log("this is the id"+req.params.id);
     Article.findOneAndUpdate({"_id": req.params.id }, { "saved": true })
     .exec(function(err, doc) {
         if (err) {
@@ -152,13 +146,7 @@ app.post("/remove/:id?", function(req, res) {
 
 // A POST request to save a note
 app.post("/addNote/:id?", function(req, res) {
-    console.log("#*#*req.body#*#*#");
-    console.log(req.body);
-    console.log("#*#*#*#*#");
     var newNote = new Note(req.body);
-    console.log("#*#*#newNote*#*#");
-    console.log(newNote);
-    console.log("#*#*#*#*#");
     newNote.save(function(error, doc) {
         if (error) {
             console.log(error);
@@ -170,7 +158,6 @@ app.post("/addNote/:id?", function(req, res) {
                     console.log(err);
                 }
                 else {
-                    // res.send(doc);
                     res.redirect("/saved");
                 }
             });
@@ -178,10 +165,9 @@ app.post("/addNote/:id?", function(req, res) {
     });
 });
 
-// A DELETE request to delete a Note
-app.delete("/deleteNote/:id", function(req, res) {
-    console.log("this is the id"+req.params.id);
-    Note.remove({"_id": req.params.id}, function(error) {
+// A POST request to delete a Note
+app.post("/deleteNote/:id", function(req, res) {
+    Note.remove({_id: req.params.id}, function(error) {
         if (error) {
             console.log(error);
         }
@@ -189,15 +175,6 @@ app.delete("/deleteNote/:id", function(req, res) {
             res.redirect("/saved");
         }
     });
-    // Note.remove({"_id": req.params.id })
-    // .exec(function(err, doc) {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     else {
-    //         res.redirect("/saved");
-    //     }
-    // });
 });
 
 // Listen on PORT
